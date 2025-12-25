@@ -18,8 +18,6 @@ const Preloader = dynamic(() => import("@/components/preloader/Preloader"), {
   ssr: false,
 });
 
-export const dynamic = 'force-dynamic';
-
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
