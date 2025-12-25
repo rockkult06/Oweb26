@@ -19,42 +19,27 @@ function PlexusNodes({ nodes }: { nodes: Array<[number, number, number]> }) {
     }
   });
 
-  const colors = ["#64FFDA", "#57CBFF", "#4ECDC4", "#FF6B6B"];
-  const positions = new Float32Array(nodes.flat());
-  const nodeColors = new Float32Array(
-    nodes.flatMap(() => {
-      const color = new THREE.Color(
-        colors[Math.floor(Math.random() * colors.length)]
-      );
-      return [color.r, color.g, color.b];
-    })
-  );
+  const positions = useMemo(() => new Float32Array(nodes.flat()), [nodes]);
 
   return (
-    <Points ref={pointsRef} positions={positions}>
-      <PointMaterial
-        size={0.1}
-        color="#64FFDA"
-        sizeAttenuation={true}
-        transparent
-        opacity={0.8}
-        vertexColors
-      />
-      <bufferGeometry>
+    <points ref={pointsRef as any}>
+      <bufferGeometry attach="geometry">
         <bufferAttribute
           attach="attributes-position"
           count={nodes.length}
           array={positions}
           itemSize={3}
         />
-        <bufferAttribute
-          attach="attributes-color"
-          count={nodes.length}
-          array={nodeColors}
-          itemSize={3}
-        />
       </bufferGeometry>
-    </Points>
+      <pointsMaterial
+        attach="material"
+        size={0.1}
+        color="#64FFDA"
+        sizeAttenuation={true}
+        transparent
+        opacity={0.8}
+      />
+    </points>
   );
 }
 
