@@ -103,8 +103,11 @@ function CityPlexusScene({ onComplete }: CityPlexusProps) {
       camera={{ position: [0, 0, 15], fov: 75 }}
       style={{ width: "100%", height: "100%" }}
     >
+      {/* @ts-ignore */}
       <ambientLight intensity={0.5} />
+      {/* @ts-ignore */}
       <pointLight position={[10, 10, 10]} intensity={1} />
+      {/* @ts-ignore */}
       <primitive object={gridHelper} />
       <PlexusNodes nodes={nodes} />
       <PlexusEdges nodes={nodes} />
