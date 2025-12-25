@@ -4,6 +4,8 @@ import PricingHero from "@/components/pricing/PricingHero";
 import PricingTiers from "@/components/pricing/PricingTiers";
 import ROICalculator from "@/components/pricing/ROICalculator";
 
+export const dynamic = 'force-dynamic';
+
 export default function PricingPage() {
   return (
     <main className="min-h-screen">

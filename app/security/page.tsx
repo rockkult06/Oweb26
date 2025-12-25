@@ -4,6 +4,8 @@ import SecurityHero from "@/components/security/SecurityHero";
 import SecurityFeatures from "@/components/security/SecurityFeatures";
 import ComplianceSection from "@/components/security/ComplianceSection";
 
+export const dynamic = 'force-dynamic';
+
 export default function SecurityPage() {
   return (
     <main className="min-h-screen">

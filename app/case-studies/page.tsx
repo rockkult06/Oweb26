@@ -3,6 +3,8 @@ import Footer from "@/components/layout/Footer";
 import CaseStudiesHero from "@/components/case-studies/CaseStudiesHero";
 import CaseStudiesList from "@/components/case-studies/CaseStudiesList";
 
+export const dynamic = 'force-dynamic';
+
 export default function CaseStudiesPage() {
   return (
     <main className="min-h-screen">

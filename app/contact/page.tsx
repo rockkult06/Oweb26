@@ -3,6 +3,8 @@ import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/contact/ContactForm";
 import ContactInfo from "@/components/contact/ContactInfo";
 
+export const dynamic = 'force-dynamic';
+
 export default function ContactPage() {
   return (
     <main className="min-h-screen">
