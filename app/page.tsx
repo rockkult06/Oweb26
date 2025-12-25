@@ -2,19 +2,44 @@
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import Hero from "@/components/home/Hero";
-import ProofBar from "@/components/home/ProofBar";
-import OWLoop from "@/components/home/OWLoop";
-import ModulesGrid from "@/components/home/ModulesGrid";
-import PilotTimeline from "@/components/home/PilotTimeline";
-import CaseStudies from "@/components/home/CaseStudies";
-import SecurityTeaser from "@/components/home/SecurityTeaser";
-import CTABand from "@/components/home/CTABand";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SoundControl from "@/components/audio/SoundControl";
 
+// Dynamic imports for all Framer Motion components
 const Preloader = dynamic(() => import("@/components/preloader/Preloader"), {
+  ssr: false,
+});
+
+const Hero = dynamic(() => import("@/components/home/Hero"), {
+  ssr: false,
+});
+
+const ProofBar = dynamic(() => import("@/components/home/ProofBar"), {
+  ssr: false,
+});
+
+const OWLoop = dynamic(() => import("@/components/home/OWLoop"), {
+  ssr: false,
+});
+
+const ModulesGrid = dynamic(() => import("@/components/home/ModulesGrid"), {
+  ssr: false,
+});
+
+const PilotTimeline = dynamic(() => import("@/components/home/PilotTimeline"), {
+  ssr: false,
+});
+
+const CaseStudies = dynamic(() => import("@/components/home/CaseStudies"), {
+  ssr: false,
+});
+
+const SecurityTeaser = dynamic(() => import("@/components/home/SecurityTeaser"), {
+  ssr: false,
+});
+
+const CTABand = dynamic(() => import("@/components/home/CTABand"), {
   ssr: false,
 });
 
