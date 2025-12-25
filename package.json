@@ -50,6 +50,7 @@
     "@testing-library/dom": "latest",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
+    "cmdk": "^1.0.0",
     "expo": "latest",
     "expo-asset": "latest",
     "expo-file-system": "latest",
