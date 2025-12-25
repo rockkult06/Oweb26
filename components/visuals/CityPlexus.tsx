@@ -36,24 +36,26 @@ function PlexusNodes({ nodes }: { nodes: Array<[number, number, number]> }) {
 
 // Edge connections between nearby nodes
 function PlexusEdges({ nodes }: { nodes: Array<[number, number, number]> }) {
-  const edges: Array<[[number, number, number], [number, number, number]]> =
-    [];
-
-  // Connect nearby nodes
-  for (let i = 0; i < nodes.length; i++) {
-    for (let j = i + 1; j < nodes.length; j++) {
-      const dx = nodes[i][0] - nodes[j][0];
-      const dy = nodes[i][1] - nodes[j][1];
-      const dz = nodes[i][2] - nodes[j][2];
-      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
-      if (dist < 3) {
-        edges.push([nodes[i], nodes[j]]);
+  const edges = useMemo(() => {
+    const edgeList: Array<[[number, number, number], [number, number, number]]> = [];
+    
+    // Connect nearby nodes
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i][0] - nodes[j][0];
+        const dy = nodes[i][1] - nodes[j][1];
+        const dz = nodes[i][2] - nodes[j][2];
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (dist < 3) {
+          edgeList.push([nodes[i], nodes[j]]);
+        }
       }
     }
-  }
+    return edgeList;
+  }, [nodes]);
 
   return (
-    <group>
+    <>
       {edges.map((edge, idx) => (
         <Line
           key={idx}
@@ -64,7 +66,7 @@ function PlexusEdges({ nodes }: { nodes: Array<[number, number, number]> }) {
           transparent
         />
       ))}
-    </group>
+    </>
   );
 }
 
@@ -73,15 +75,15 @@ function CityPlexusScene({ onComplete }: CityPlexusProps) {
   const [nodes] = useState(() => {
     const nodeCount =
       typeof window !== "undefined" && window.innerWidth < 768 ? 50 : 200;
-    const nodes: Array<[number, number, number]> = [];
+    const nodeList: Array<[number, number, number]> = [];
     for (let i = 0; i < nodeCount; i++) {
-      nodes.push([
+      nodeList.push([
         (Math.random() - 0.5) * 20,
         (Math.random() - 0.5) * 20,
         (Math.random() - 0.5) * 10,
       ]);
     }
-    return nodes;
+    return nodeList;
   });
 
   useEffect(() => {
@@ -140,4 +142,3 @@ export default function CityPlexus({ onComplete }: CityPlexusProps) {
     </div>
   );
 }
-
