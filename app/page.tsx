@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import dynamic from "next/dynamic";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -48,19 +48,23 @@ export default function Home() {
 
   return (
     <>
-      <Preloader onComplete={() => setIsLoaded(true)} />
+      <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
+        <Preloader onComplete={() => setIsLoaded(true)} />
+      </Suspense>
       {isLoaded && (
         <main id="main-content" className="min-h-screen">
           <SoundControl />
           <Header />
-          <Hero />
-          <ProofBar />
-          <OWLoop />
-          <ModulesGrid />
-          <PilotTimeline />
-          <CaseStudies />
-          <SecurityTeaser />
-          <CTABand />
+          <Suspense fallback={<div className="min-h-screen" />}>
+            <Hero />
+            <ProofBar />
+            <OWLoop />
+            <ModulesGrid />
+            <PilotTimeline />
+            <CaseStudies />
+            <SecurityTeaser />
+            <CTABand />
+          </Suspense>
           <Footer />
         </main>
       )}
