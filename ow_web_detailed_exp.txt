@@ -1,0 +1,1339 @@
+Aşağıdaki doküman,  OW web sitesi raporunu **çok daha “bağlayıcı / uygulanabilir / teknik açıdan denetlenebilir”** bir **Talimat Dosyası** seviyesine yükseltir ve  teknik rapordaki tüm kritik öğeleri (renk paleti, UI bileşenleri, UX akışları, animasyonlar, mimari, performans, güvenlik, analitik, CI/CD, faz planı) **tek bir ana spesifikasyon altında birleştirir**.
+
+
+
+OW (Optimize the World) - Vercel Deployment Brief
+🚀 Project Overview
+OW is an enterprise-grade smart city optimization platform that transforms complex urban data into actionable insights through an immersive "digital command center" experience. Built for municipal decision-makers, it combines real-time data visualization, AI-driven analytics, and interactive simulation tools to optimize public transportation and city operations.
+
+🎯 Core Challenge
+Believing that "smart cities" should feel tangible, not abstract, we're building a web experience that makes urban optimization both visible and interactive—moving beyond dashboards to create a living, breathing digital twin of city infrastructure.
+
+🏗️ Technical Stack
+Framework: Next.js 15 (App Router) + React 19 + TypeScript
+
+Styling: Tailwind CSS + shadcn/ui + Framer Motion
+
+3D Visualization: Three.js + React Three Fiber
+
+Maps & Geodata: MapLibre GL + Turf.js
+
+State Management: Zustand + React Query
+
+Authentication: NextAuth.js + RBAC system
+
+Analytics: Google Analytics 4 + custom event tracking
+
+✨ Key Technical Features
+Immersive 3D City Visualization: Real-time particle system showing urban data flows
+
+Progressive Data Loading: Critical-first strategy with Web Worker background processing
+
+Adaptive Rendering: Automatic fallback from WebGL to Canvas 2D to Lottie animations
+
+Real-time Data Streams: WebSocket + SSE for live city data simulation
+
+Modular Dashboard System: Expandable widgets with role-based permissions
+
+Performance-First Architecture: Targeting Core Web Vitals scores >90
+
+🎨 Design Philosophy
+"City Night Mode": Dark theme with controlled neon accents (no excessive glow)
+
+Data-First UI: Every visual element serves information, not decoration
+
+HUD-Style Interface: Inspired by control centers, not traditional dashboards
+
+Responsive & Accessible: WCAG 2.1 AA compliant with motion sensitivity options
+
+📈 Performance Targets
+LCP: <2.5s
+
+FID: <100ms
+
+CLS: <0.1
+
+Bundle Size: <150KB core, <500KB total
+
+3D Scene Load: Progressive with graceful degradation
+
+🌐 Deployment Structure
+text
+Primary Domain: optimizeworld.net
+Marketing Site: Vercel (static optimization)
+Demo/App Subdomain: app.optimizeworld.net (dynamic features)
+Staging: preview branches via Vercel
+🔧 Vercel-Specific Configuration
+Edge Functions: API routes + middleware
+
+Image Optimization: Next.js Image with AVIF/WebP
+
+Analytics Integration: Vercel Analytics + Speed Insights
+
+Security Headers: CSP, HSTS, X-Frame-Options pre-configured
+
+CI/CD: GitHub Actions → Vercel with automated Lighthouse audits
+
+🚦 Phased Rollout
+Phase 1 (Now): Marketing site + interactive demo teaser
+
+Phase 2 (Q2 2024): Full 3D city simulation + ROI calculator
+
+Phase 3 (Q3 2024): PWA + i18n + advanced analytics
+
+📊 Success Metrics
+Conversion: Demo requests from municipal decision-makers
+
+Engagement: Time spent in interactive simulation modules
+
+Performance: Sustained 90+ Lighthouse scores
+
+Reliability: 99.9% uptime for critical paths
+
+💡 Why This Fits Vercel
+OW leverages Vercel's strengths in:
+
+Next.js 15 optimization for hybrid static/dynamic rendering
+
+Global edge network for real-time data delivery
+
+Serverless functions for scalable AI/ML inference
+
+Preview deployments for stakeholder feedback cycles
+
+Performance analytics to maintain strict UX standards
+
+TL;DR: A Next.js-powered "digital command center" that makes smart city optimization tangible through immersive 3D visualization, real-time data, and enterprise-grade performance—built to showcase what modern web platforms can do for urban infrastructure.
+
+---
+
+# OW (Optimize the World)
+OW (Optimize the World), akıllı şehirlerin geleceğini şekillendiren, veri odaklı ve yapay zeka destekli optimizasyon çözümleri sunan öncü bir teknoloji şirketidir. Akıllı şehir karar organları, Belediyeler ve kamu kurumları, Araştırma Kurumlarına yönelik geliştirilmiş platformumuz, karar destek sistemlerinden toplu taşıma sistemlerine, iş zekası uygulamalarından optimizasyon ve simülasyon sistemlerine kadar geniş bir yelpazede operasyonel verimliliği artıran çözümler sunar.
+
+## Web Sitesi Talimat Dosyası ve Teknik Spesifikasyon (V3.0)
+
+**Doküman Türü:** Tasarım + UX + Teknik Mimari + Kabul Kriterleri
+**Hedef Ürün:** OW Marketing Site + OW Control Center Demo Experience (public) + Login sonrası ürün alanına hazırlık (opsiyon)
+**Öncelik:** Belediye karar vericilerinde güven + demo/pilot dönüşümü + teknik ekipte “yapılabilirlik” algısı
+**Stack:** Next.js 14/15 (App Router) + React 19 + TypeScript + Tailwind + shadcn/ui + Framer Motion + (Three.js / R3F) + MapLibre
+**Deploy:** Vercel (marketing) + opsiyonel ayrı subdomain (app.optimizeworld.net)
+
+---
+
+## 0) Mutlak İlkeler (Non-Negotiables)
+
+1. **Ana Konsept:** “Akıllı şehirler için dijital kontrol merkezi”
+2. **Temel Döngü:** Veri → Görselleştirme → Analiz → Aksiyon (her ana sayfada görünür)
+3. **Dark-First:** “City Night Mode” temasından sapılmayacak
+4. **Premium Minimal + HUD:** Gösteriş değil; veri odaklı, kurumsal, “komuta merkezi” hissi
+5. **3D/Particle yalnızca değer kattığında:** Performans ve erişilebilirlik öncelikli; fallback şart
+6. **Tek CTA disiplini:** her sayfada **Request Demo** ve **Start 12-Week Pilot** görünür
+7. **Ölçülebilirlik:** dönüşüm, performans, hata izleme planı olmadan prod’a çıkılmaz
+
+---
+
+## 1) Ürün Kapsamı ve Sayfa Haritası
+
+### 1.1 Public Marketing (Zorunlu)
+
+* **/** Home (Control Center landing + proof + modüller + pilot + case studies)
+* **/solutions** OW Suite™ (modül katalog + filtre + entegrasyon)
+* **/use-cases** Belediye/Toplu taşıma/Operasyon/Bütçe/Çevre/Erişilebilirlik
+* **/how-it-works** 12-Week Pilot + OW Loop + veri gereksinimleri
+* **/case-studies** İzmir + GTFS-RT + Yoğunluk + Boş km (sayısal kanıt)
+* **/security** KVKK/GDPR/ISO yaklaşımı + kontroller
+* **/pricing** Paketler + ROI Calculator
+* **/resources** Blog/Whitepaper/RFP Template/Tech Notes
+* **/about** Vizyon/Misyon/Ekip
+* **/contact** Demo/Pilot form + toplantı
+
+### 1.2 Opsiyonel (İleriki Faz)
+
+* **/login** (MFA)
+* **/app** (şehir seçimi + demo dashboard)
+
+> Not: Bu dokümanda UI bileşenleri “Control Center Demo” için tanımlanmıştır; canlı müşteri paneli ayrı fazda.
+
+---
+
+## 2) Marka / Tasarım Sistemi (Design Tokens)
+
+### 2.1 Renk Paleti (Zorunlu)
+
+**Theme: City Night Mode**
+
+* Background-1: `#0A192F`
+* Background-2: `#112240`
+* Background-3: `#233554`
+
+**Accent**
+
+* Primary: `#64FFDA` (optimizasyon/verim)
+* Secondary: `#57CBFF` (teknoloji/güven)
+* Action/Danger: `#FF6B6B` (alarm/critical)
+* Warning: `#FFD166` (uyarı)
+
+**Data Viz Presets** (grafik/harita)
+
+* Traffic Flow: `#4ECDC4 → #FF6B6B`
+* Density: `#1A936F → #FFE156 → #D7263D`
+* Cost: `#118AB2 → #06D6A0 → #EF476F`
+* Timeline: `#7209B7 → #3A86FF → #FB5607`
+
+> Uygulama talimatı: Tailwind config’e `ow-*` token’ları olarak eklenmeli.
+
+### 2.2 Tipografi (Zorunlu)
+
+* Heading: **Inter**
+
+  * H1 48/700, H2 36/600, H3 24/600, H4 20/500
+* Body & Data: **Roboto Mono**
+
+  * Body 16/400, Small 14/400, Data 15/400 (`#E6F1FF`)
+* Line-height: 1.6, letter-spacing: 0.5px
+
+### 2.3 Görsel Dil
+
+* İkon: Lucide + OW özel ikon seti
+* UI yüzeyi: Glassmorphism + liquid glass (blur + düşük opaklık)
+* Aşırı glow yasak; “kontrollü neon” (kurumsal)
+
+---
+
+## 3) Global UI Mimarisi ve Bileşen Standardı
+
+### 3.1 Header (Public + Demo ortak)
+
+**Zorunlu içerik:**
+
+* OW Logo + kısa tagline
+* Primary nav (Home, Solutions, Use Cases, Case Studies, Security, Pricing, Resources)
+* Sağ: **Request Demo** (primary) + Dil seçici (TR/EN) + Sound toggle (opsiyon)
+
+**Davranış:**
+
+* Sticky + scroll’da shrink
+* Mobile: burger menu + CTA sabit
+
+### 3.2 “Control Center” Demo Header (opsiyonel app modu)
+
+Şu model uygulanacak:
+
+* City selector (İstanbul/Ankara/İzmir/Bursa demo)
+* Notification bell (demo count)
+* Quick actions: Demo Talep Et / ROI Hesapla / Destek Al
+
+### 3.3 Modül Kartları (Expandable Widgets)
+
+Her modül kartı standart şablonla:
+
+* Title + icon + status badge (active/warning/error/inactive)
+* 2–4 KPI (value + trend + delta)
+* Expand: detay panel (grafik/harita/öneri)
+
+**Kabul kriteri:** Kartlar 100% responsive, hover + keyboard focus durumları tanımlı.
+
+---
+
+## 4) Ana Deneyim Tasarımı (Language Explorer benzeri imza)
+
+### 4.1 OW City Pulse Scene (Hero)
+
+**Amaç:** “dijital kontrol merkezi” hissi
+**Ögeler:**
+
+* Particle nodes: şehir düğümleri
+* Data flows: bezier akışlar
+* Subtle parallax: mouse move
+* Scroll story: zoom/rotate
+
+**Fallback zorunluluğu:**
+
+* WebGL kapalıysa: MP4/Lottie/PNG sequence
+* `prefers-reduced-motion` için: statik sahne
+
+### 4.2 Explore & Filter (Solutions sayfası)
+
+**Arama:** “Search by city / module / KPI / data source”
+**Filtre chip seti:**
+
+* Module: TransitOpt, FleetOpt, RiderSense, CostLogic, DRT, Accessibility, ODMatrix, Intelligence, GTFS-RT
+* KPI goal: OTP, empty km, cost, crowding, accessibility
+* Data: GTFS, GTFS-RT, AVL, Ticketing, SCADA, Sensors
+* Deployment: Cloud/On-prem/Hybrid
+
+**Davranış:**
+
+* Filtre seçiminde UI animasyonla yeniden düzenlenir (layout shift olmadan)
+
+---
+
+## 5) UX Akışları (Zorunlu Senaryolar)
+
+### 5.1 İlk ziyaretçi (Yeni müşteri) – “90 saniye dönüşüm”
+
+1. Landing (0–5 sn)
+
+* Hero + 3 proof KPI + 2 CTA
+
+2. Interactive Demo (5–20 sn)
+
+* City select + module select + simülasyon sonuç
+
+3. ROI Calculator (20–60 sn)
+
+* Şehir ölçeği + mevcut KPI + tasarruf çıktısı
+
+4. Demo request (60–90 sn)
+
+* Minimal form + toplantı linki
+
+**Kabul kriteri:** Bu akış 3 click içinde “demo request”e ulaşır.
+
+### 5.2 Mevcut müşteri (opsiyonel)
+
+* MFA + org/city seçimi + rol bazlı izin + dashboard summary
+
+### 5.3 Derin analiz (demo)
+
+* Module → date range → view mode (chart/map/table) → AI öneri → rapor
+
+---
+
+## 6) Dinamik Öğeler ve Animasyon Standardı
+
+### 6.1 Animasyon ilkeleri
+
+* Motion = bilgi taşır (süs değil)
+* 60 FPS hedef; düşerse kalite azaltma
+* Framer Motion standard easing seti tanımlanacak
+* “Elastic” gibi aşırı easing yalnızca data update micro animasyonlarında
+
+### 6.2 Zorunlu micro-interactions
+
+* Cards: hover lift + glow
+* Charts: tooltip + point highlight
+* Buttons: press + ripple (hafif)
+* Dropdown: slide/accordion
+* Loading: skeleton + progress (büyük veri)
+
+### 6.3 3D/Particle optimizasyonları (zorunlu checklist)
+
+* Occlusion culling
+* Frustum culling
+* LOD (3 seviye)
+* Instanced rendering
+* Max particles: 10.000 (üst limit)
+* Mobile: 2D/low detail mode
+
+---
+
+## 7) Teknik Mimari (Frontend + Backend Kurgusu)
+
+### 7.1 Frontend Stack (Zorunlu)
+
+* Next.js App Router, React 19, TypeScript
+* Tailwind + shadcn/ui
+* State: Zustand (UI) + React Query (server)
+* Forms: React Hook Form + Zod
+* Charts: Recharts + D3 (karma kullanım kontrollü)
+* 3D: Three.js + R3F + Drei (opsiyon)
+
+### 7.2 Backend/Service (public demo için minimum)
+
+* API Gateway
+* Auth (opsiyon, login varsa)
+* Data service (demo mock + gerçek entegrasyona hazırlık)
+* Notification (WebSocket/SSE)
+* Report service (PDF/Excel)
+
+**Depolama (opsiyon):**
+
+* PostgreSQL + TimescaleDB + Redis + MinIO
+
+---
+
+## 8) Performans Spesifikasyonu (Kabul Eşiği)
+
+### 8.1 Core Web Vitals
+
+* LCP < 2.5s
+* FID < 100ms
+* CLS < 0.1
+* INP < 200ms
+
+### 8.2 Progressive Data Loading (zorunlu yaklaşım)
+
+1. Critical data (<1MB)
+2. Above-the-fold visual lazy load
+3. Detail data on-demand
+4. Historical data background (web worker)
+
+**Kabul kriteri:** İlk içerik 1–2 sn’de görünür; 3D sahne daha sonra yüklenebilir.
+
+---
+
+## 9) Güvenlik & Uyumluluk (Public + App)
+
+### 9.1 RBAC (app varsa)
+
+* SUPER_ADMIN, CITY_ADMIN, MODULE_MANAGER, OPERATOR, VIEWER
+
+### 9.2 Şifreleme ve API güvenliği
+
+* TLS 1.3 (transit)
+* AES-256 (at-rest)
+* API keys + JWT + rate limiting
+* data masking (hassas veri)
+
+### 9.3 KVKK/GDPR
+
+* Privacy policy + cookie consent
+* veri işleme kayıtları / onay yönetimi
+* audit log (app modunda)
+
+---
+
+## 10) CMS / İçerik Yönetimi (Zorunlu: marketing tarafı)
+
+### Minimum CMS kapsamı
+
+* Landing içerikleri (hero metinleri, proof KPI’lar)
+* Case studies yönetimi
+* ROI calculator parametreleri
+* Resources/blog içerikleri
+
+**Uygulama önerisi:** headless CMS (opsiyon) veya MDX + admin panel (faz 2)
+
+---
+
+## 11) Analitik, İzleme, A/B Test
+
+### 11.1 Tracking Plan (zorunlu event seti)
+
+* module_opened, dashboard_viewed, report_generated
+* demo_requested, roi_calculated, contact_form_submitted
+* performance_metric, error_occurred
+
+### 11.2 A/B Test framework
+
+* landing_page_cta varyantları
+* pricing_page varyantları
+* dashboard_layout varyantları
+
+**Kabul kriteri:** Prod’da event’ler doğrulanmış olmadan yayın yok.
+
+---
+
+## 12) CI/CD, Test, Monitoring (Zorunlu)
+
+### 12.1 Pipeline
+
+1. Lint & Test
+2. Build + image optimize
+3. Deploy staging
+4. Cypress e2e
+5. Lighthouse audit
+6. Security scan
+7. Canary prod deploy
+8. Monitor + rollback
+
+### 12.2 Monitoring
+
+* Sentry (error)
+* Datadog / Prometheus + Grafana (opsiyon)
+* GA4 + Hotjar (opsiyon)
+
+---
+
+## 13) Sayfa Bazlı İçerik Talimatı (Özet)
+
+### Home
+
+* Hero: “Şehrinizi Optimize Edin” + City Pulse Scene
+* Proof bar: %18/%22/%26/%40
+* OW Loop: Veri→Görselleştirme→Analiz→Aksiyon
+* Modules grid + filter teaser
+* 12 Week Pilot timeline
+* Case studies
+* Security teaser
+* CTA band + footer
+
+### Solutions
+
+* Search + filter
+* Module detail pattern (Problem→Solution→Data→KPIs→Integration→CTA)
+* Cross-sell ilişkileri
+
+### Pricing
+
+* Tier table + “şehir ölçeği slider” ROI
+* “Request custom quote” net
+
+### Contact
+
+* Minimal form + NDA checkbox
+* Meeting scheduling link
+
+---
+
+## 14) Geliştirme Fazları (Bağlayıcı Yol Haritası)
+
+### Faz 1 (Hafta 1–8) – Marketing MVP
+
+* Home, Solutions, Pricing (basic), Contact
+* Proof bar + pilot timeline
+* SEO/Analytics temel
+
+### Faz 2 (Hafta 9–16) – Interaktif Demo + Güven
+
+* City/module demo
+* Case studies + Security tam
+* ROI calculator gelişmiş
+
+### Faz 3 (Hafta 17–24) – Ölçek + PWA + Çok dil
+
+* EN sürüm
+* PWA/Offline (opsiyon)
+* Performans/3D optimizasyon tam
+
+---
+
+## 15) Kabul Kriterleri (Definition of Done)
+
+1. Her sayfada CTA görünür
+2. WebGL kapalıysa deneyim bozulmaz (fallback var)
+3. Responsive tüm breakpoints
+4. Core Web Vitals hedefleri geçer
+5. Formlar validate + rate limit
+6. Analytics event’leri doğrulanmış
+7. Lighthouse + Cypress raporları staging’de yeşil
+8. Security headers aktif
+9. İçerik güncellemeleri CMS/MDX ile yapılabilir
+
+---
+
+# OW (Optimize the World) - Genişletilmiş Talimat Dosyası ve Teknik Spesifikasyon (V3.1)
+
+############################################################################################33
+
+## 🎯 EKLER ve yardımcı dosyalar:
+--
+
+## 📊 **EK 1: 3D/PARTİKÜL SİSTEMİ TEKNİK DETAYLARI**
+
+### **7.1.1 Three.js/R3F Implementation Specs**
+
+\`\`\`typescript
+// Scene Configuration
+const OWSceneConfig = {
+  // Performance Settings
+  maxParticles: 10000,
+  targetFPS: 60,
+  qualityLevels: {
+    high: { resolution: 1, samples: 8, shadows: true },
+    medium: { resolution: 0.75, samples: 4, shadows: false },
+    low: { resolution: 0.5, samples: 2, shadows: false }
+  },
+  
+  // Particle System Configuration
+  particles: {
+    cityNodes: {
+      count: 500, // Şehir düğümleri
+      size: [2, 8],
+      color: '#64FFDA',
+      opacity: 0.6
+    },
+    dataFlows: {
+      count: 200, // Veri akışları
+      speed: 0.5,
+      width: 1,
+      color: '#57CBFF'
+    }
+  },
+  
+  // Fallback Strategy
+  fallback: {
+    webGLUnsupported: 'lottie-animation',
+    lowPerformance: 'reduce-quality',
+    mobile: '2d-canvas'
+  }
+};
+
+// Component Structure
+interface CityPulseSceneProps {
+  cityId?: string;
+  dataMode: 'demo' | 'live' | 'simulation';
+  quality: 'auto' | 'high' | 'medium' | 'low';
+  onLoad?: () => void;
+  onError?: (error: SceneError) => void;
+}
+\`\`\`
+
+### **7.1.2 WebGL Fallback Implementation**
+
+\`\`\`javascript
+// Detection and Fallback Logic
+const detectWebGLCapabilities = () => {
+  const capabilities = {
+    webgl: false,
+    webgl2: false,
+    maxTextureSize: 0,
+    extensions: []
+  };
+  
+  // WebGL 1 Support
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  
+  if (gl) {
+    capabilities.webgl = true;
+    capabilities.maxTextureSize = gl.getParameter(gl.MAX_TEXTURE_SIZE);
+    
+    // Check critical extensions
+    const requiredExtensions = [
+      'OES_texture_float',
+      'WEBGL_draw_buffers',
+      'EXT_blend_minmax'
+    ];
+    
+    capabilities.extensions = requiredExtensions.filter(ext => 
+      gl.getExtension(ext)
+    );
+  }
+  
+  return capabilities;
+};
+
+// Adaptive Renderer
+class AdaptiveSceneRenderer {
+  constructor() {
+    this.capabilities = detectWebGLCapabilities();
+    this.currentMode = this.determineRenderMode();
+  }
+  
+  determineRenderMode() {
+    if (!this.capabilities.webgl) return '2d';
+    if (this.capabilities.extensions.length < 2) return 'low';
+    if (window.devicePixelRatio > 2) return 'medium';
+    return 'high';
+  }
+  
+  async initializeScene() {
+    switch (this.currentMode) {
+      case 'high':
+        return new WebGLScene({ quality: 'high' });
+      case 'medium':
+        return new WebGLScene({ quality: 'medium' });
+      case 'low':
+        return new Canvas2DScene();
+      case '2d':
+        return new LottieFallback();
+    }
+  }
+}
+\`\`\`
+
+---
+
+## 🎭 **EK 2: DEMO DATA MOCK STRUCTURE**
+
+### **8.1.1 Mock Data Service Architecture**
+
+\`\`\`typescript
+// Types
+interface DemoCity {
+  id: string;
+  name: string;
+  population: number;
+  transitLines: number;
+  vehicles: number;
+  modules: ModuleStatus[];
+}
+
+interface ModuleStatus {
+  moduleId: string;
+  status: 'active' | 'warning' | 'error' | 'inactive';
+  kpis: KPI[];
+  lastUpdated: Date;
+}
+
+interface KPI {
+  id: string;
+  name: string;
+  value: number;
+  unit: string;
+  target: number;
+  trend: 'up' | 'down' | 'stable';
+  change: number;
+}
+
+// Mock Data Generator
+class DemoDataService {
+  private cities: DemoCity[] = [
+    {
+      id: 'istanbul',
+      name: 'İstanbul',
+      population: 16000000,
+      transitLines: 450,
+      vehicles: 12000,
+      modules: this.generateModuleStatus('istanbul')
+    },
+    // ... diğer şehirler
+  ];
+  
+  generateModuleStatus(cityId: string): ModuleStatus[] {
+    return [
+      {
+        moduleId: 'transitopt',
+        status: 'active',
+        kpis: [
+          { id: 'otp', name: 'On-Time Performance', value: 94, unit: '%', target: 95, trend: 'up', change: 3 },
+          { id: 'wait-time', name: 'Avg Wait Time', value: 4.2, unit: 'min', target: 3.5, trend: 'down', change: -1.1 }
+        ],
+        lastUpdated: new Date()
+      },
+      // ... diğer modüller
+    ];
+  }
+  
+  // Real-time simulation
+  simulateRealTimeUpdates(cityId: string) {
+    return setInterval(() => {
+      // Her 5 saniyede bir KPI'ları güncelle
+      this.updateKPIs(cityId);
+      this.emitDataUpdate(cityId);
+    }, 5000);
+  }
+}
+\`\`\`
+
+---
+
+## 🔧 **EK 3: CMS INTEGRATION SPECIFICATION**
+
+### **9.1 Headless CMS Architecture**
+
+\`\`\`typescript
+// Content Types Definition
+interface ContentType {
+  pages: PageContent[];
+  caseStudies: CaseStudy[];
+  blogPosts: BlogPost[];
+  pricingTiers: PricingTier[];
+  teamMembers: TeamMember[];
+}
+
+// Sanity.io Schema Example
+const pageSchema = {
+  name: 'page',
+  title: 'Page',
+  type: 'document',
+  fields: [
+    {
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: Rule => Rule.required()
+    },
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: { source: 'title' }
+    },
+    {
+      name: 'modules',
+      title: 'Featured Modules',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'module' }] }]
+    },
+    {
+      name: 'dynamicContent',
+      title: 'Dynamic Content Blocks',
+      type: 'array',
+      of: [
+        { type: 'hero' },
+        { type: 'stats' },
+        { type: 'cta' },
+        { type: 'testimonial' }
+      ]
+    }
+  ]
+};
+
+// Next.js Integration
+export async function getPageContent(slug: string) {
+  const query = `*[_type == "page" && slug.current == $slug][0]{
+    title,
+    modules[]->{
+      title,
+      description,
+      icon,
+      kpis
+    },
+    dynamicContent
+  }`;
+  
+  const content = await sanityClient.fetch(query, { slug });
+  return content;
+}
+\`\`\`
+
+### **9.2 Admin Panel Requirements**
+
+\`\`\`typescript
+interface AdminPanelFeatures {
+  // Content Management
+  contentEditor: {
+    wysiwyg: boolean;
+    markdown: boolean;
+    imageOptimization: boolean;
+    versionControl: boolean;
+  };
+  
+  // SEO Management
+  seoTools: {
+    metaTags: boolean;
+    openGraph: boolean;
+    sitemap: boolean;
+    robotsTxt: boolean;
+  };
+  
+  // Analytics Dashboard
+  analytics: {
+    pageViews: boolean;
+    conversionTracking: boolean;
+    heatmaps: boolean;
+    userFlows: boolean;
+  };
+  
+  // User Management
+  userManagement: {
+    roles: AdminRole[];
+    permissions: Permission[];
+    activityLogs: boolean;
+  };
+}
+\`\`\`
+
+---
+
+## 🧪 **EK 4: TEST STRATEGY & QA REQUIREMENTS**
+
+### **10.1 Test Automation Strategy**
+
+\`\`\`typescript
+// Test Suite Structure
+const testSuites = {
+  unit: {
+    framework: 'Jest',
+    coverage: '>80%',
+    critical: ['utils', 'hooks', 'helpers']
+  },
+  
+  integration: {
+    framework: 'React Testing Library',
+    coverage: [
+      'component-rendering',
+      'state-management',
+      'api-integration'
+    ]
+  },
+  
+  e2e: {
+    framework: 'Cypress',
+    scenarios: [
+      {
+        name: 'demo-request-flow',
+        steps: ['landing', 'interactive-demo', 'roi-calculator', 'form-submission']
+      },
+      {
+        name: 'module-exploration',
+        steps: ['module-selection', 'data-filtering', 'detail-view', 'report-generation']
+      }
+    ]
+  },
+  
+  performance: {
+    tools: ['Lighthouse', 'WebPageTest'],
+    thresholds: {
+      performance: 90,
+      accessibility: 95,
+      bestPractices: 90,
+      seo: 90
+    }
+  }
+};
+
+// Accessibility Testing
+const a11yRequirements = {
+  standard: 'WCAG 2.1 AA',
+  requiredTests: [
+    'keyboard-navigation',
+    'screen-reader-compatibility',
+    'color-contrast',
+    'focus-management',
+    'aria-labels'
+  ],
+  tools: ['axe-core', 'Lighthouse', 'manual-testing']
+};
+\`\`\`
+
+### **10.2 Performance Testing Matrix**
+
+\`\`\`typescript
+interface PerformanceTest {
+  scenario: string;
+  device: 'mobile' | 'desktop' | 'tablet';
+  network: '4g' | '3g' | 'slow-3g';
+  metrics: {
+    firstPaint: number;
+    interactive: number;
+    speedIndex: number;
+    lighthouse: number;
+  };
+}
+
+const performanceTests: PerformanceTest[] = [
+  {
+    scenario: 'landing-page-load',
+    device: 'desktop',
+    network: '4g',
+    metrics: {
+      firstPaint: 1000,
+      interactive: 2500,
+      speedIndex: 1500,
+      lighthouse: 90
+    }
+  },
+  // ... diğer senaryolar
+];
+\`\`\`
+
+---
+
+## 🌍 **EK 5: INTERNATIONALIZATION (i18n) STRATEGY**
+
+### **11.1 i18n Implementation Spec**
+
+\`\`\`typescript
+// Locale Configuration
+const locales = {
+  tr: {
+    code: 'tr',
+    name: 'Türkçe',
+    direction: 'ltr',
+    defaultCurrency: 'TRY'
+  },
+  en: {
+    code: 'en',
+    name: 'English',
+    direction: 'ltr',
+    defaultCurrency: 'USD'
+  }
+};
+
+// Translation Structure
+const translationStructure = {
+  common: {
+    buttons: {
+      requestDemo: { tr: 'Demo Talep Et', en: 'Request Demo' },
+      startPilot: { tr: '12 Haftalık Pilot', en: '12-Week Pilot' }
+    },
+    navigation: {
+      solutions: { tr: 'Çözümler', en: 'Solutions' },
+      pricing: { tr: 'Fiyatlandırma', en: 'Pricing' }
+    }
+  },
+  
+  modules: {
+    transitopt: {
+      title: { tr: 'Frekans Optimizasyonu', en: 'Frequency Optimization' },
+      description: { /* ... */ }
+    }
+  },
+  
+  caseStudies: {
+    izmir: {
+      title: { tr: 'İzmir Ulaşım Ağı Optimizasyonu', en: 'İzmir Transit Network Optimization' },
+      results: { /* ... */ }
+    }
+  }
+};
+
+// Next.js i18n Configuration
+// next.config.js
+module.exports = {
+  i18n: {
+    locales: ['tr', 'en'],
+    defaultLocale: 'tr',
+    localeDetection: true,
+    domains: [
+      {
+        domain: 'optimizeworld.net',
+        defaultLocale: 'tr'
+      },
+      {
+        domain: 'optimizeworld.com',
+        defaultLocale: 'en'
+      }
+    ]
+  }
+};
+\`\`\`
+
+---
+
+## 🔍 **EK 6: SEO & MARKETING TECHNICAL REQUIREMENTS**
+
+### **12.1 SEO Implementation Checklist**
+
+\`\`\`typescript
+const seoRequirements = {
+  technical: {
+    sitemap: {
+      dynamic: true,
+      priority: 0.8,
+      changefreq: 'weekly'
+    },
+    robots: {
+      allowAll: true,
+      crawlDelay: 1
+    },
+    canonical: {
+      autoGenerate: true,
+      languageAlternates: true
+    },
+    structuredData: {
+      organization: true,
+      localBusiness: true,
+      product: true,
+      breadcrumb: true
+    }
+  },
+  
+  content: {
+    metaTags: {
+      titleLength: '50-60 chars',
+      descriptionLength: '150-160 chars',
+      keywordDensity: '1-2%'
+    },
+    headings: {
+      h1PerPage: 1,
+      hierarchy: 'correct-order'
+    },
+    images: {
+      altText: 'required',
+      optimized: 'WebP + AVIF',
+      lazyLoading: 'native'
+    }
+  },
+  
+  performance: {
+    coreWebVitals: 'passing',
+    mobileFirst: true,
+    amp: 'optional'
+  }
+};
+\`\`\`
+
+### **12.2 Marketing Analytics Events**
+
+\`\`\`typescript
+// Google Analytics 4 Event Structure
+const ga4Events = {
+  page_view: {
+    page_title: 'string',
+    page_location: 'string',
+    page_path: 'string'
+  },
+  
+  demo_request: {
+    method: 'form' | 'calendar',
+    source_page: 'string',
+    campaign: 'string'
+  },
+  
+  module_interaction: {
+    module_id: 'string',
+    action: 'view' | 'expand' | 'simulate',
+    duration: 'number'
+  },
+  
+  roi_calculated: {
+    city_size: 'small' | 'medium' | 'large',
+    estimated_savings: 'number',
+    calculation_time: 'number'
+  }
+};
+
+// Custom Dimension Mapping
+const customDimensions = {
+  cd1: 'user_role',
+  cd2: 'organization_size',
+  cd3: 'interested_modules',
+  cd4: 'pilot_interest'
+};
+\`\`\`
+
+---
+
+## 🚀 **EK 7: DEPLOYMENT & DEVOPS ENHANCEMENTS**
+
+### **13.1 Vercel Deployment Configuration**
+
+\`\`\`yaml
+# vercel.json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "headers": {
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.google-analytics.com https://*.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.google-analytics.com https://*.analytics.google.com wss://*.optimizeworld.net"
+      }
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_ENV": "production",
+    "NEXT_PUBLIC_GA_MEASUREMENT_ID": "@ga-measurement-id",
+    "NEXT_PUBLIC_SENTRY_DSN": "@sentry-dsn"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "develop": true
+    }
+  }
+}
+\`\`\`
+
+### **13.2 Monitoring & Alerting Configuration**
+
+\`\`\`typescript
+interface MonitoringSetup {
+  errorTracking: {
+    sentry: {
+      dsn: string;
+      tracesSampleRate: 0.1;
+      replaysSessionSampleRate: 0.1;
+      replaysOnErrorSampleRate: 1.0;
+    };
+  };
+  
+  performanceMonitoring: {
+    webVitals: {
+      reportingApi: 'web-vitals';
+      threshold: {
+        lcp: 2500,
+        fid: 100,
+        cls: 0.1,
+        inp: 200
+      };
+    };
+    customMetrics: {
+      '3d-scene-load': number;
+      'api-response-time': number;
+      'dashboard-render': number;
+    };
+  };
+  
+  alerting: {
+    channels: ['slack', 'email', 'sms'];
+    conditions: {
+      'error-rate': { threshold: '5%', period: '5m' };
+      'p95-lcp': { threshold: '4000ms', period: '10m' };
+      'uptime': { threshold: '99.5%', period: '1h' };
+    };
+  };
+}
+\`\`\`
+
+---
+
+## 📋 **EK 8: ACCEPTANCE CRITERIA EXPANSION**
+
+### **14.1 Expanded DoD (Definition of Done)**
+
+\`\`\`typescript
+const acceptanceCriteria = {
+  functional: {
+    allPages: ['home', 'solutions', 'pricing', 'contact'].map(page => ({
+      page,
+      ctaVisible: true,
+      responsive: ['mobile', 'tablet', 'desktop'],
+      seoMeta: ['title', 'description', 'og:tags']
+    })),
+    
+    interactiveElements: [
+      'demo-request-form',
+      'roi-calculator',
+      'module-filters',
+      'city-selector'
+    ].map(element => ({
+      element,
+      accessible: true,
+      validated: true,
+      errorHandled: true
+    }))
+  },
+  
+  performance: {
+    lighthouse: {
+      performance: '≥90',
+      accessibility: '≥95',
+      bestPractices: '≥90',
+      seo: '≥90'
+    },
+    webVitals: {
+      lcp: '≤2500ms',
+      fid: '≤100ms',
+      cls: '≤0.1',
+      inp: '≤200ms'
+    },
+    bundleSize: {
+      main: '≤150kb',
+      total: '≤500kb',
+      images: 'optimized'
+    }
+  },
+  
+  technical: {
+    security: [
+      'https-enforced',
+      'security-headers',
+      'csrf-protection',
+      'xss-protection'
+    ],
+    accessibility: [
+      'keyboard-navigation',
+      'screen-reader',
+      'color-contrast',
+      'focus-management'
+    ],
+    browserSupport: [
+      'chrome-latest',
+      'firefox-latest',
+      'safari-14+',
+      'edge-latest'
+    ]
+  },
+  
+  business: {
+    analytics: [
+      'ga4-configured',
+      'events-tracked',
+      'conversions-setup',
+      'dashboard-accessible'
+    ],
+    cms: [
+      'content-editable',
+      'seo-manageable',
+      'images-uploadable',
+      'schedule-posts'
+    ]
+  }
+};
+\`\`\`
+
+---
+
+## 📈 **EK 9: ROADMAP & PHASED DELIVERY ENHANCEMENT**
+
+### **15.1 Detailed Phase Breakdown**
+
+\`\`\`mermaid
+gantt
+    title OW Web Development Roadmap
+    dateFormat  YYYY-MM-DD
+    section Phase 1: Marketing MVP
+    Design System & UI Components     :2024-01-01, 3w
+    Core Pages (Home, Solutions)      :2024-01-22, 4w
+    SEO & Analytics Setup             :2024-02-19, 2w
+    Performance Optimization          :2024-03-04, 2w
+    UAT & Launch Prep                 :2024-03-18, 2w
+    
+    section Phase 2: Interactive Demo
+    3D City Visualization             :2024-04-01, 4w
+    Demo Data & Simulations           :2024-04-29, 3w
+    Case Studies & Security Pages     :2024-05-20, 3w
+    Advanced ROI Calculator           :2024-06-10, 3w
+    
+    section Phase 3: Scale & Enhance
+    Internationalization (i18n)       :2024-07-01, 3w
+    PWA & Offline Capabilities        :2024-07-22, 4w
+    CMS Integration                   :2024-08-19, 4w
+    Performance Final Optimization    :2024-09-16, 3w
+\`\`\`
+
+### **15.2 Phase-Specific Success Metrics**
+
+\`\`\`typescript
+const phaseMetrics = {
+  phase1: {
+    launch: '2024-Q1',
+    targets: {
+      websiteTraffic: '10k/month',
+      demoRequests: '50/month',
+      contactRate: '5%',
+      performanceScore: '90+'
+    }
+  },
+  
+  phase2: {
+    launch: '2024-Q2',
+    targets: {
+      engagementRate: '40%',
+      demoCompletion: '30%',
+      timeOnSite: '5min+',
+      conversionRate: '8%'
+    }
+  },
+  
+  phase3: {
+    launch: '2024-Q3',
+    targets: {
+      internationalTraffic: '25%',
+      mobileEngagement: '60%',
+      returnVisitors: '30%',
+      seoRankings: 'top-10'
+    }
+  }
+};
+\`\`\`
+
+---
+
+## 🎯 **SONUÇ VE TAVSİYELER**
+
+V3.0 dokümanınız zaten çok güçlü bir temel oluşturuyor. Yukarıdaki eklerle:
+
+1. **Teknik derinlik** artacak
+2. **Uygulama netliği** sağlanacak
+3. **Kalite güvence** süreçleri formalize edilecek
+4. **Ölçeklenebilirlik** planları belirginleşecek
+5. **Bakım ve geliştirme** süreçleri yapılandırılacak
+
+### **Öncelikli Eylemler:**
+
+1. **Hemen başlayın:**
+   - Design system token'larını Tailwind config'e aktarın
+   - Core component'ları (Header, Footer, Card) oluşturun
+   - Analytics ve monitoring setup'ını kurun
+
+2. **Faz 1'de odaklanın:**
+   - Marketing sayfalarını tamamlayın
+   - Core Web Vitals hedeflerini yakalayın
+   - Demo request funnel'ı optimize edin
+
+3. **İleriye planlayın:**
+   - 3D demo için R&D başlatın
+   - CMS seçimini değerlendirin
+   - i18n mimarisini tasarlayın

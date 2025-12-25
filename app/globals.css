@@ -1,0 +1,388 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 40% 10%;
+    --foreground: 210 40% 98%;
+    --card: 210 40% 12%;
+    --card-foreground: 210 40% 98%;
+    --popover: 210 40% 12%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 166 100% 70%;
+    --primary-foreground: 210 40% 10%;
+    --secondary: 199 100% 70%;
+    --secondary-foreground: 210 40% 10%;
+    --muted: 210 40% 20%;
+    --muted-foreground: 210 40% 70%;
+    --accent: 210 40% 20%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 100% 70%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 40% 25%;
+    --input: 210 40% 25%;
+    --ring: 166 100% 70%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Roboto Mono', monospace;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    position: relative;
+    overflow-x: hidden;
+  }
+  
+  /* Animated gradient background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(circle at 20% 50%, rgba(100, 255, 218, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(87, 203, 255, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 40% 20%, rgba(100, 255, 218, 0.1) 0%, transparent 50%),
+      linear-gradient(180deg, #0A192F 0%, #112240 50%, #0A192F 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 20s ease infinite;
+    z-index: -2;
+    pointer-events: none;
+  }
+  
+  /* Animated mesh gradient overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(circle at 1px 1px, rgba(100, 255, 218, 0.15) 1px, transparent 0);
+    background-size: 50px 50px;
+    animation: meshMove 20s linear infinite;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.4;
+  }
+  
+  /* Subtle noise texture for natural look */
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+  h1 {
+    @apply text-5xl font-bold;
+  }
+  h2 {
+    @apply text-4xl font-semibold;
+  }
+  h3 {
+    @apply text-2xl font-semibold;
+  }
+  h4 {
+    @apply text-xl font-medium;
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes meshMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+@layer utilities {
+  /* Premium Glassmorphism */
+  .glass {
+    @apply bg-background-secondary/40 backdrop-blur-xl border border-white/10;
+    box-shadow: 
+      0 8px 32px 0 rgba(0, 0, 0, 0.37),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .glass-strong {
+    @apply bg-background-secondary/60 backdrop-blur-2xl border border-white/20;
+    box-shadow: 
+      0 8px 32px 0 rgba(0, 0, 0, 0.5),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+      0 0 0 1px rgba(100, 255, 218, 0.1);
+  }
+  
+  /* Liquid Glass Effect */
+  .liquid-glass {
+    @apply relative;
+    background: linear-gradient(
+      135deg,
+      rgba(100, 255, 218, 0.1) 0%,
+      rgba(87, 203, 255, 0.05) 50%,
+      rgba(100, 255, 218, 0.1) 100%
+    );
+    backdrop-filter: blur(20px);
+    /* Remove border-image, use pseudo-element for gradient border */
+    border: none;
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 0 40px rgba(100, 255, 218, 0.1);
+  }
+  
+  /* Gradient border with rounded corners using pseudo-element */
+  .liquid-glass::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      rgba(100, 255, 218, 0.4),
+      rgba(87, 203, 255, 0.3),
+      rgba(100, 255, 218, 0.4)
+    );
+    -webkit-mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: destination-out;
+    mask: 
+      linear-gradient(#fff 0 0) content-box, 
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: 0;
+  }
+  
+  /* Ensure content is above border */
+  .liquid-glass > * {
+    position: relative;
+    z-index: 1;
+  }
+  
+  /* Shine animation removed - no moving animations */
+  
+  /* Animated Glow */
+  .glow-primary {
+    box-shadow: 
+      0 0 20px rgba(100, 255, 218, 0.4),
+      0 0 40px rgba(100, 255, 218, 0.2),
+      0 0 60px rgba(100, 255, 218, 0.1);
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+  
+  .glow-secondary {
+    box-shadow: 
+      0 0 20px rgba(87, 203, 255, 0.4),
+      0 0 40px rgba(87, 203, 255, 0.2),
+      0 0 60px rgba(87, 203, 255, 0.1);
+    animation: glowPulse 2s ease-in-out infinite;
+  }
+  
+  @keyframes glowPulse {
+    0%, 100% {
+      opacity: 1;
+      filter: brightness(1);
+    }
+    50% {
+      opacity: 0.8;
+      filter: brightness(1.2);
+    }
+  }
+  
+  /* Text Gradient */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      #64FFDA 0%,
+      #57CBFF 50%,
+      #64FFDA 100%
+    );
+    background-size: 200% 200%;
+    animation: gradientText 3s ease infinite;
+  }
+  
+  @keyframes gradientText {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  /* Premium Button Glow */
+  .btn-glass {
+    @apply relative overflow-hidden;
+    background: linear-gradient(
+      135deg,
+      rgba(100, 255, 218, 0.2),
+      rgba(87, 203, 255, 0.15)
+    );
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(100, 255, 218, 0.3);
+    box-shadow: 
+      0 4px 16px rgba(100, 255, 218, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .btn-glass:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(100, 255, 218, 0.3),
+      rgba(87, 203, 255, 0.25)
+    );
+    box-shadow: 
+      0 8px 32px rgba(100, 255, 218, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .btn-glass::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
+  }
+  
+  .btn-glass:hover::before {
+    left: 100%;
+  }
+  
+  /* Depth Layers */
+  .depth-1 {
+    transform: translateZ(0);
+  }
+  
+  .depth-2 {
+    transform: translateZ(10px);
+  }
+  
+  .depth-3 {
+    transform: translateZ(20px);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  /* Reduce 3D animation complexity */
+  canvas {
+    animation: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --primary: 166 100% 80%;
+    --secondary: 199 100% 80%;
+    --foreground: 210 40% 100%;
+    --background: 210 40% 5%;
+  }
+}
+
+/* Skip to content link for accessibility */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  border-radius: 4px;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* Writing vertical for scroll indicator */
+.writing-vertical-rl {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Dust grain texture for sections - natural film grain look */
+section {
+  position: relative;
+}
+
+section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Enhanced dust grain pattern - more visible */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='dustGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix in='colorNoise' type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0.5 0 0.3 0 0.7 0 0.2'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23dustGrain)' opacity='0.08'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: overlay;
+  opacity: 0.6;
+}
+
+/* Additional dust grain layer for more texture */
+section::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* Fine dust grain overlay */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fineGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='1' stitchTiles='stitch'/%3E%3CfeColorMatrix in='colorNoise' type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fineGrain)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 150px 150px;
+  background-repeat: repeat;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: soft-light;
+}
+
+section > * {
+  position: relative;
+  z-index: 1;
+}
