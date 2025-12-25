@@ -54,6 +54,7 @@
     "expo-asset": "latest",
     "expo-file-system": "latest",
     "expo-gl": "latest",
+    "embla-carousel-react": "^8.0.0",
     "framer-motion": "^11.0.0",
     "immer": "latest",
     "lucide-react": "^0.400.0",
