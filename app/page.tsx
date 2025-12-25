@@ -1,12 +1,23 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import SoundControl from "@/components/audio/SoundControl";
 
-// Dynamic imports for all Framer Motion components
+// Dynamic imports with loading states
+const Header = dynamic(() => import("@/components/layout/Header"), {
+  ssr: false,
+  loading: () => <div className="h-20 bg-black" />,
+});
+
+const Footer = dynamic(() => import("@/components/layout/Footer"), {
+  ssr: false,
+  loading: () => <div className="h-64 bg-black" />,
+});
+
+const SoundControl = dynamic(() => import("@/components/audio/SoundControl"), {
+  ssr: false,
+});
+
 const Preloader = dynamic(() => import("@/components/preloader/Preloader"), {
   ssr: false,
 });
@@ -45,26 +56,31 @@ const CTABand = dynamic(() => import("@/components/home/CTABand"), {
 
 export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="fixed inset-0 bg-black" />;
+  }
 
   return (
     <>
-      <Suspense fallback={<div className="fixed inset-0 bg-black" />}>
-        <Preloader onComplete={() => setIsLoaded(true)} />
-      </Suspense>
+      <Preloader onComplete={() => setIsLoaded(true)} />
       {isLoaded && (
         <main id="main-content" className="min-h-screen">
           <SoundControl />
           <Header />
-          <Suspense fallback={<div className="min-h-screen" />}>
-            <Hero />
-            <ProofBar />
-            <OWLoop />
-            <ModulesGrid />
-            <PilotTimeline />
-            <CaseStudies />
-            <SecurityTeaser />
-            <CTABand />
-          </Suspense>
+          <Hero />
+          <ProofBar />
+          <OWLoop />
+          <ModulesGrid />
+          <PilotTimeline />
+          <CaseStudies />
+          <SecurityTeaser />
+          <CTABand />
           <Footer />
         </main>
       )}
