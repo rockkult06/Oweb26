@@ -22,24 +22,15 @@ function PlexusNodes({ nodes }: { nodes: Array<[number, number, number]> }) {
   const positions = useMemo(() => new Float32Array(nodes.flat()), [nodes]);
 
   return (
-    <points ref={pointsRef as any}>
-      <bufferGeometry attach="geometry">
-        <bufferAttribute
-          attach="attributes-position"
-          count={nodes.length}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        attach="material"
+    <Points ref={pointsRef as any} positions={positions}>
+      <PointMaterial
         size={0.1}
         color="#64FFDA"
         sizeAttenuation={true}
         transparent
         opacity={0.8}
       />
-    </points>
+    </Points>
   );
 }
 
