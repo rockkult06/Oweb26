@@ -10,7 +10,7 @@ export default function V0ParticleAnimation({
   onComplete,
 }: V0ParticleAnimationProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {

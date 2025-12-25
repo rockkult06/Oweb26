@@ -21,7 +21,7 @@ export default function ParticleExplosion({ onComplete }: ParticleExplosionProps
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const particlesRef = useRef<THREE.Points | null>(null);
-  const animationFrameRef = useRef<number>();
+  const animationFrameRef = useRef<number | undefined>(undefined);
   const [mounted, setMounted] = useState(false);
   const explosionStartedRef = useRef(false);
   const timeRef = useRef(0);
